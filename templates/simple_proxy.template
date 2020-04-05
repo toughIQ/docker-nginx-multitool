@@ -1,0 +1,23 @@
+upstream backend {
+    server NGX_BACKEND_SERVER:NGX_BACKEND_PORT;
+}
+
+server {
+    listen       NGX_HTTP_PORT;
+
+    location / {
+#        proxy_set_header Host $host;
+        proxy_set_header Host NGX_BACKEND_SERVER;
+#        proxy_set_header X-Forwarded-Proto $scheme;
+#        proxy_set_header X-Forwarded-Port $server_port;
+#        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_pass NGX_BACKEND_PROTO://backend;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        # This allows the ability for the execute shell window to remain open for up to 15 minutes. Without this parameter, the default is 1 minute and will automatically close.
+        proxy_read_timeout 900s;
+        resolver NGX_BACKEND_RESOLVE_DNS ipv6=NGX_BACKEND_RESOLVE_IPV6;
+        resolver_timeout 5s;
+    }
+}

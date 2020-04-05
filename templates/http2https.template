@@ -1,0 +1,4 @@
+server {
+    listen       NGX_HTTP_PORT;
+    return 301 https://$host$request_uri;
+}

@@ -1,0 +1,3 @@
+# only put directives, which apply to the HTTP config section of nginx.
+
+server_tokens off;
